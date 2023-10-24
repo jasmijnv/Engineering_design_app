@@ -1,3 +1,4 @@
+
 <resources>
     <string name="app_name">My Application_2</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,4 +13,5 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="soil_moisture_levels"> Desired Soil Moisture level 1: .......\n Current soil Moisture level 1: .......\n Desired Soil Moisture level 2: .......\n Current soil Moisture level 2: .......\n Desired Soil Moisture level 3: .......\n Current soil Moisture level 3: .......\n Desired Soil Moisture level 4: .......\n Current soil Moisture level 4: .......\n</string>
 </resources>
