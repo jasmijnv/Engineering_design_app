@@ -11,6 +11,10 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication_2.databinding.FragmentGalleryBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlin.math.round
 
 class GalleryFragment : Fragment() {
@@ -20,6 +24,10 @@ class GalleryFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val database = FirebaseDatabase.getInstance()
+    private val myRef = database.reference
+    private val tankStatus = myRef.child("Tank").child("status")
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +50,24 @@ class GalleryFragment : Fragment() {
         // and change the image and value in the page accordingly
         val button = binding.watertankbutton
         button.setOnClickListener {
-            val waterLevel = (1..100).random()
+            var waterLevel = (1..100).random()
+            tankStatus.setValue(waterLevel)
             tankImage(waterLevel)
         }
+        tankStatus.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val value = dataSnapshot.getValue()
+                    Log.d("file", "Value is: $value")
+                } else {
+                    println("database doesnt exist")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.d("error", "Database error")
+            }
+        })
         return root
     }
 
@@ -56,7 +79,7 @@ class GalleryFragment : Fragment() {
     private fun tankImage(level: Int) {
         Log.d("BUTTONS", "User tapped the water tank button")
         var images = arrayOf(binding.watertank0, binding.watertank20, binding.watertank40, binding.watertank60, binding.watertank80, binding.watertank100)
-        val currentImage = round(level / 20.0).toInt()
+        var currentImage = round(level / 20.0).toInt()
         var levelText = binding.textView2
         levelText.text="Current water level: ${currentImage*20}%"
         Log.d("WATER-LEVEL", "$level")

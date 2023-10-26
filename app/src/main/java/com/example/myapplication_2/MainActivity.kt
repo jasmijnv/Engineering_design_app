@@ -1,25 +1,25 @@
 package com.example.myapplication_2
 
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
-import android.widget.Button
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.navigation.NavigationView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication_2.databinding.ActivityMainBinding
-import com.example.myapplication_2.databinding.FragmentGalleryBinding
+import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.FirebaseDatabase
+
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private val database = FirebaseDatabase.getInstance()
+    private val myRef = database.reference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,5 +55,7 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+
+
 
 }
