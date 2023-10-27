@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication_2.databinding.FragmentGalleryBinding
+//Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlin.math.round
+//ThingSpeak
 import android.os.AsyncTask
 import android.widget.Button
 import android.widget.EditText
@@ -38,8 +40,6 @@ class GalleryFragment : Fragment() {
     private val tankStatus = myRef.child("Tank").child("status")
 
     //ThingSpeak
-    private lateinit var dataField: EditText
-    private lateinit var sendButton: Button
     private val API_KEY = "ZDBRGUOS0NWQM27Y"
     private val THINGSPEAK_API_URL = "https://api.thingspeak.com/update"
     private val REFRESH_INTERVAL = 10000 // Refresh every 10 seconds
@@ -70,6 +70,7 @@ class GalleryFragment : Fragment() {
         // and change the image and value in the page accordingly
         val button = binding.watertankbutton
         button.setOnClickListener {
+            Log.d("BUTTONS", "User tapped the water tank button")
             var waterLevel = (1..100).random()
             tankImage(waterLevel)
             //Firebase
@@ -102,7 +103,6 @@ class GalleryFragment : Fragment() {
     }
 
     private fun tankImage(level: Int) {
-        Log.d("BUTTONS", "User tapped the water tank button")
         var images = arrayOf(binding.watertank0, binding.watertank20, binding.watertank40, binding.watertank60, binding.watertank80, binding.watertank100)
         var currentImage = round(level / 20.0).toInt()
         var levelText = binding.textView2
@@ -123,6 +123,7 @@ class GalleryFragment : Fragment() {
     private val refreshRunnable: Runnable = object : Runnable {
         override fun run() {
             ReadThingSpeakData().execute()
+
             // Schedule the next refresh
             handler.postDelayed(this, REFRESH_INTERVAL.toLong())
         }
@@ -188,7 +189,7 @@ class GalleryFragment : Fragment() {
                 val createdAt = jsonObject.getString("created_at")
                 val entryId = jsonObject.getInt("entry_id")
                 val field1Data = jsonObject.getString("field1")
-
+//                tankImage(field1Data.toInt())
                 val displayText = "Created At: $createdAt\nEntry ID: $entryId\nField1 Data: $field1Data"
                 println(displayText)
             } catch (e: Exception) {
